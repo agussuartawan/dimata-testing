@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.dimata.testing.entity.masterdata.Product"%>
+<%@page import="com.dimata.testing.entity.masterdata.PstProduct"%>
 <!DOCTYPE html>
 <%@page import="java.util.Date"%>
 <%@page import="com.dimata.util.Formater"%>
@@ -12,6 +14,16 @@
 <%@page import="com.dimata.util.Command"%>
 
 <%@include file="/main/javainit.jsp" %>
+
+<%
+    Vector listProducts = new Vector();
+
+    try{
+        listProducts = PstProduct.list(0, 0, "", "");
+    } catch(Exception e){
+        System.out.println("Error: "+ e);
+    }
+%>
     
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -46,23 +58,38 @@
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>#</th>
+                                        <th>Code</th>
+                                        <th>Product Name</th>
+                                        <th>Stock</th>
+                                        <th>Price</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                <% 
+                                    for(int y = 0; y < listProducts.size(); y++){
+                                    
+                                        Product objProduct = (Product) listProducts.get(y);
+                                %>
+                                        <tr>
+                                            <td> <%= y + 1 %> </td>
+                                            <td> <%= objProduct.getCode() %> </td>
+                                            <td> <%= objProduct.getName() %> </td>
+                                            <td> <%= objProduct.getStock() %> </td>
+                                            <td> <%= objProduct.getPrice() %> </td>
+                                            <td> <%= objProduct.getCreatedAt() %> </td>
+                                            <td> <%= objProduct.getUpdatedAt() %> </td>
+                                            <td>
+                                                <a href="#" class="badge badge-rounded bg-primary">edit</a>
+                                                <a href="#" class="badge badge-rounded bg-danger">hapus</a>
+                                            </td>
+                                        </tr>
+                                <%
+                                    }
+                                %>
                                 </tbody>
                             </table>
                         </div>

@@ -26,7 +26,7 @@
 
     <database>
         <dbdriver>com.mysql.jdbc.Driver</dbdriver>
-        <dburl>jdbc:mysql://localhost:3306/qdev_hrd</dburl>
+        <dburl>jdbc:mysql://127.0.0.1:3306/xxxx</dburl>
         <dbuser>root</dbuser>
         <dbpasswd></dbpasswd>
 
