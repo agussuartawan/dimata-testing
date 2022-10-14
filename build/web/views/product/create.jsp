@@ -19,42 +19,36 @@
 
 <%@include file="/main/javainit.jsp" %>
 
-<%
-    boolean privView = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_MAPPING_CONTENT_DATA, AppObjInfo.OBJ_KONDISI, AppObjInfo.COMMAND_VIEW);
-    boolean privAdd = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_MAPPING_CONTENT_DATA, AppObjInfo.OBJ_KONDISI, AppObjInfo.COMMAND_ADD);
-    boolean privUpdate =true;// userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_MAPPING_CONTENT_DATA, AppObjInfo.OBJ_KONDISI, AppObjInfo.COMMAND_UPDATE);
-    boolean privDelete = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_MAPPING_CONTENT_DATA, AppObjInfo.OBJ_KONDISI, AppObjInfo.COMMAND_DELETE);
-    boolean privDownload =true;// userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_MAPPING_CONTENT_DATA, AppObjInfo.OBJ_KONDISI, AppObjInfo.COMMAND_DOWNLOAD);
-    
+<%    
     // untuk menampilkan message erorr atau success
     int excCode = FRMMessage.NONE;
-    String msgString =  "";
+    String msgString = "";
 
     // iCommand dan appUserOID untuk me ruquest data
     int iCommand = FRMQueryString.requestCommand(request);
-    long appProductOID = FRMQueryString.requestLong(request,FrmProduct.fieldNames[FrmProduct.FRM_FIELD_ID]);
-    
-    //membuat OOP controller dan form user
+    long appProductOID = FRMQueryString.requestLong(request, FrmProduct.fieldNames[FrmProduct.FRM_FIELD_ID]);
+
+    //membuat OOP controller dan form product
     CtrlProduct ctrlProduct = new CtrlProduct(request);
     FrmProduct frmProduct = ctrlProduct.getForm();
-    
-    //untuk meng excute data yg di terima oleh iCommand & appUserOiD
-    excCode = ctrlProduct.action(iCommand,appProductOID,0,"Admin");
-    
+
+    //untuk meng excute data yg di terima oleh iCommand & appProductOiD
+    excCode = ctrlProduct.action(iCommand, appProductOID, 0, "Admin");
+
     //untuk menampilkan pesan
-    msgString =  ctrlProduct.getMessage();
-    
-    //membuat objek/OOP dari appUser
+    msgString = ctrlProduct.getMessage();
+
+    //membuat objek/OOP dari Product
     Product objProduct = new Product();
     try {
-          if(appProductOID != 0){
-              objProduct = PstProduct.fetchExc(appProductOID); // tanya ini
-          }
+        if (appProductOID != 0) {
+            objProduct = PstProduct.fetchExc(appProductOID); // tanya ini
+        }
     } catch (Exception e) {
-        System.out.println("Error fetch appuser :"+e);
+        System.out.println("Error fetch product :" + e);
     }
 %>
-    
+
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -83,38 +77,31 @@
                             Create New Product
                         </div>
                         <div class="card-body">
-                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" method="POST">
+                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="get">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
                                 <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
-                                <input type='hidden' name='privupdate' id='privupdate' value='<%= privUpdate %>'>
-                                <input type='hidden' name='privdelete' id='privdelete' value='<%= privDelete %>'>
-                                <% if(excCode > 0 && iCommand != Command.NONE){ %>
-                                    <h4><%=msgString%></h4>
-                                <% }else if(iCommand != Command.NONE){ %>
-                                    <h4>Data Berhasil Tersimpan</h4>
-                                <% } %>
-                                                
-                              <div class="form-group mb-3">
-                                <label for="code">Code</label>
-                                <input type="text" class="form-control" id="code" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_CODE]%>' value="<%=objProduct.getCode()%>"  placeholder="Enter Code">
-                              </div>
-                                
-                              <div class="form-group mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_NAME]%>' value="<%=objProduct.getName()%>"  placeholder="Enter Name">
-                              </div>
-                                
-                              <div class="form-group mb-3">
-                                <label for="stock">Stock</label>
-                                <input type="number" class="form-control" id="stock" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_STOCK]%>' value="<%=objProduct.getStock()%>"  placeholder="Enter Stock">
-                              </div>
-                                
-                              <div class="form-group mb-3">
-                                <label for="price">Price</label>
-                                <input type="text" class="form-control" id="price" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_PRICE]%>' value="<%=objProduct.getPrice()%>"  placeholder="Enter Price">
-                              </div>
-                                <a   href="javascript:simpan();" class="btn btn-primary">Save</a>
+                                <div class="form-group mb-3">
+                                    <label for="code">Code</label>
+                                    <input type="text" class="form-control" id="code" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_CODE]%>' value="<%=objProduct.getCode()%>"  placeholder="Enter Code">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_NAME]%>' value="<%=objProduct.getName()%>"  placeholder="Enter Name">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="stock">Stock</label>
+                                    <input type="number" class="form-control" id="stock" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_STOCK]%>' value="<%=objProduct.getStock()%>"  placeholder="Enter Stock">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="price">Price</label>
+                                    <input type="text" class="form-control" id="price" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_PRICE]%>' value="<%=objProduct.getPrice()%>"  placeholder="Enter Price">
+                                </div>
+                                <a   href="<%= approot%>/views/product/index.jsp" class="btn btn-secondary">Back</a>                                
+                                <a   href="javascript:simpan();" class="btn btn-primary">Save</a>                                
                             </form>
                         </div>
                     </div>
@@ -124,11 +111,36 @@
         </div>
     </div>
     <%@include file="/views/include/_js.jsp" %>
+
     <script>
-                function simpan(){
-                    document.<%=frmProduct.FRM_NAME_PRODUCT%>.command.value="<%=Command.SAVE%>";
-                    document.<%=frmProduct.FRM_NAME_PRODUCT%>.action="create.jsp";
-                    document.<%=frmProduct.FRM_NAME_PRODUCT%>.submit();
-                }
+        window.onload = function(e){ 
+            <% if (excCode > 0 && iCommand != Command.NONE) { %>
+                alertError('<%=msgString%>')
+            <% } else if (iCommand != Command.NONE) { %>
+                alertSuccess('Data save successfully')
+            <% } %>
+        }
+        function simpan() {
+            document.<%=frmProduct.FRM_NAME_PRODUCT%>.command.value = "<%=Command.SAVE%>";
+            document.<%=frmProduct.FRM_NAME_PRODUCT%>.action = "create.jsp";
+            document.<%=frmProduct.FRM_NAME_PRODUCT%>.submit();
+
+        }
+        const alertError = (message) => {
+            Swal.fire({
+                title: 'Error!',
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'ok'
+            })
+        }
+        const alertSuccess = (message) => {
+            Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'ok'
+            })
+        }
     </script>
 </body>

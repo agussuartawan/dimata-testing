@@ -12,3 +12,4 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="<%= approot %>/assets/js/datatables-simple-demo.js"></script>        
 <script src="https://kit.fontawesome.com/0158c268ff.js" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

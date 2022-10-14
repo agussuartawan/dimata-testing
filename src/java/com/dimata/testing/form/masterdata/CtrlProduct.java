@@ -30,7 +30,7 @@ public class CtrlProduct extends Control implements I_Language {
     public static int RSLT_EST_CODE_EXIST = 2;
     public static int RSLT_FORM_INCOMPLETE = 3;
     public static String[][] resultText = {
-        {"Berhasil", "Tidak dapat diproses", "NoPerkiraan sudah ada", "Data tidak lengkap"},
+//        {"Berhasil", "Tidak dapat diproses", "NoPerkiraan sudah ada", "Data tidak lengkap"},
         {"Succes", "Can not process", "Estimation code exist", "Data incomplete"}
     };
     private int start;

@@ -23,8 +23,8 @@ public class FrmProduct extends FRMHandler implements I_FRMInterface, I_FRMType 
    public static final int FRM_FIELD_NAME = 2;
    public static final int FRM_FIELD_STOCK = 3;
    public static final int FRM_FIELD_PRICE = 4;
-   public static final int FRM_FIELD_CREATED_AT = 5;
-   public static final int FRM_FIELD_UPDATED_AT = 6;
+//   public static final int FRM_FIELD_CREATED_AT = 5;
+//   public static final int FRM_FIELD_UPDATED_AT = 6;
 
 
 public static String[] fieldNames = {
@@ -33,8 +33,8 @@ public static String[] fieldNames = {
       "name",
       "stock",
       "price",
-      "created_at",
-      "updated_at",
+//      "created_at",
+//      "updated_at",
 };
 
 public static int[] fieldTypes = {
@@ -43,8 +43,8 @@ public static int[] fieldTypes = {
     TYPE_STRING,
     TYPE_INT,
     TYPE_STRING,
-    TYPE_DATE,
-    TYPE_DATE,
+//    TYPE_DATE,
+//    TYPE_DATE,
 };
 
 public FrmProduct() {
@@ -87,8 +87,8 @@ public void requestEntityObject(Product entProduct) {
         entProduct.setName(getString(FRM_FIELD_NAME));
         entProduct.setStock(getInt(FRM_FIELD_STOCK));
         entProduct.setPrice(getFloat(FRM_FIELD_PRICE));
-        entProduct.setCreatedAt(getDate(FRM_FIELD_CREATED_AT));
-        entProduct.setUpdatedAt(getDate(FRM_FIELD_UPDATED_AT));
+//        entProduct.setCreatedAt(getDate(FRM_FIELD_CREATED_AT));
+//        entProduct.setUpdatedAt(getDate(FRM_FIELD_UPDATED_AT));
    } catch (Exception e) {
         System.out.println("Error on requestEntityObject : " + e.toString());
    }

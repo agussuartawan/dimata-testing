@@ -15,8 +15,11 @@ import com.dimata.qdep.db.*;
 import com.dimata.qdep.entity.*;
 import com.dimata.util.Command;
 import com.dimata.util.Formater;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import org.json.JSONObject;
+import java.util.Date;
 
 public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_PersintentExc, I_Language {
 
@@ -40,7 +43,7 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
     };
 
     public static int[] fieldTypes = {
-        TYPE_LONG + TYPE_PK + TYPE_ID + TYPE_AI,
+        TYPE_INT + TYPE_PK + TYPE_ID + TYPE_AI,
         TYPE_STRING,
         TYPE_STRING,
         TYPE_INT,
@@ -127,14 +130,14 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
     public static synchronized long updateExc(Product entProduct) throws DBException {
         try {
             if (entProduct.getOID() != 0) {
+                Date date = new Date();
                 PstProduct pstProduct = new PstProduct(entProduct.getOID());
-                pstProduct.setLong(FLD_ID, entProduct.getId());
                 pstProduct.setString(FLD_CODE, entProduct.getCode());
                 pstProduct.setString(FLD_NAME, entProduct.getName());
                 pstProduct.setInt(FLD_STOCK, (int) entProduct.getStock());
                 pstProduct.setFloat(FLD_PRICE, entProduct.getPrice());
-                pstProduct.setDate(FLD_CREATED_AT, entProduct.getCreatedAt());
-                pstProduct.setDate(FLD_UPDATED_AT, entProduct.getUpdatedAt());
+//                pstProduct.setDate(FLD_CREATED_AT, entProduct.getCreatedAt());
+                pstProduct.setDate(FLD_UPDATED_AT, date);
                 pstProduct.update();
                 return entProduct.getOID();
             }
@@ -171,13 +174,15 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
 
     public static synchronized long insertExc(Product entProduct) throws DBException {
         try {
+            Date date = new Date();            
             PstProduct pstProduct = new PstProduct(0);
+            
             pstProduct.setString(FLD_CODE, entProduct.getCode());
             pstProduct.setString(FLD_NAME, entProduct.getName());
             pstProduct.setInt(FLD_STOCK, (int) entProduct.getStock());
             pstProduct.setFloat(FLD_PRICE, entProduct.getPrice());
-            pstProduct.setDate(FLD_CREATED_AT, entProduct.getCreatedAt());
-            pstProduct.setDate(FLD_UPDATED_AT, entProduct.getUpdatedAt());
+            pstProduct.setDate(FLD_CREATED_AT, date);
+            pstProduct.setDate(FLD_UPDATED_AT, date);
             pstProduct.insert();
             entProduct.setOID(pstProduct.getlong(FLD_ID));
         } catch (DBException dbe) {

@@ -4,6 +4,10 @@
     Author     : kadek
 --%>
 
+<%@page import="com.dimata.testing.form.masterdata.CtrlProduct"%>
+<%@page import="com.dimata.qdep.form.FRMMessage"%>
+<%@page import="com.dimata.testing.form.masterdata.FrmProduct"%>
+<%@page import="com.dimata.qdep.form.FRMQueryString"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.dimata.testing.entity.masterdata.Product"%>
 <%@page import="com.dimata.testing.entity.masterdata.PstProduct"%>
@@ -16,7 +20,36 @@
 <%@include file="/main/javainit.jsp" %>
 
 <%    
+    // untuk menampilkan message erorr atau success
+    int excCode = FRMMessage.NONE;
+    String msgString = "";
+
+    int iCommand = FRMQueryString.requestCommand(request);
+    long appProductOID = FRMQueryString.requestLong(request, FrmProduct.fieldNames[FrmProduct.FRM_FIELD_ID]);
+
+    // menginisialisasi object CtrlProduct
+    CtrlProduct ctrlProduct = new CtrlProduct(request);
+
+    //untuk meng excute data yg di terima oleh iCommand & appProductOiD
+    excCode = ctrlProduct.action(iCommand, appProductOID, 0, "Admin");
+
+    //untuk menampilkan pesan
+    msgString = ctrlProduct.getMessage();
+
     Vector listProducts = new Vector();
+    
+    long oidDeleteProduct = FRMQueryString.requestLong(request, "oidDeleteProduct");
+
+    if(iCommand == Command.DELETE){
+        if(oidDeleteProduct != 0){
+            try {
+                 long oidDelete  = PstProduct.deleteExc(oidDeleteProduct); 
+            } catch (Exception e) {
+                System.out.println("Error delete Data: "+e);
+            }
+            
+        }
+    }
 
     try {
         listProducts = PstProduct.list(0, 0, "", "");
@@ -68,29 +101,35 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <%
-                                        for (int y = 0; y < listProducts.size(); y++) {
+                                <form name="listProducts" id="listProducts">
+                                    <input type="hidden" name="command" id="command" value="<%= Command.NONE%>">
+                                    <input type="hidden" name="approot" id="approot" value="<%= approot%>">
+                                    <input type='hidden' name='oidDeleteProduct' id='privdelete' value='<%= oidDeleteProduct %>'>
+                                    
+                                    <tbody>
+                                        <%
+                                            for (int y = 0; y < listProducts.size(); y++) {
 
-                                            Product objProduct = (Product) listProducts.get(y);
-                                    %>
-                                    <tr>
-                                        <td> <%= y + 1%> </td>
-                                        <td> <%= objProduct.getCode()%> </td>
-                                        <td> <%= objProduct.getName()%> </td>
-                                        <td> <%= objProduct.getStock()%> </td>
-                                        <td> <%= objProduct.getPrice()%> </td>
-                                        <td> <%= objProduct.getCreatedAt()%> </td>
-                                        <td> <%= objProduct.getUpdatedAt()%> </td>
-                                        <td>
-                                            <a href="#" class="badge badge-rounded bg-primary">edit</a>
-                                            <a href="#" class="badge badge-rounded bg-danger">hapus</a>
-                                        </td>
-                                    </tr>
-                                    <%
-                                        }
-                                    %>
-                                </tbody>
+                                                Product objProduct = (Product) listProducts.get(y);
+                                        %>
+                                        <tr>
+                                            <td> <%= y + 1%> </td>
+                                            <td> <%= objProduct.getCode()%> </td>
+                                            <td> <%= objProduct.getName()%> </td>
+                                            <td> <%= objProduct.getStock()%> </td>
+                                            <td> <%= objProduct.getPrice()%> </td>
+                                            <td> <%= objProduct.getCreatedAt()%> </td>
+                                            <td> <%= objProduct.getUpdatedAt()%> </td>
+                                            <td>
+                                                <a href="<%=approot%>/views/product/create.jsp?<%=FrmProduct.fieldNames[FrmProduct.FRM_FIELD_ID]%>=<%=objProduct.getOID()%>"><span class="badge bg-primary">edit</span></a>
+                                                <a href="javascript:deleteProduct('<%= objProduct.getOID() %>')"><span class="badge bg-danger">delete</span></a>
+                                            </td>
+                                        </tr>
+                                        <%
+                                            }
+                                        %>
+                                    </tbody>
+                                </form>
                             </table>
                         </div>
                     </div>
@@ -101,4 +140,49 @@
     </div>
     <%@include file="/views/include/_js.jsp" %>
 </body>
+    <script>
+        window.onload = function(e){
+            <% if (excCode > 0 && iCommand != Command.NONE) { %>
+                alertError('<%=msgString%>')
+            <% } else if (iCommand != Command.NONE) { %>
+                alertSuccess('Data save successfully')
+            <% } %>
+        }
+
+        function deleteProduct(oidDeletedProduct){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.listProducts.oidDeleteProduct.value = oidDeletedProduct;
+                    document.listProducts.command.value = "<%= Command.DELETE %>";
+                    document.listProducts.action = "index.jsp";
+                    document.listProducts.submit();
+                }
+            })
+        }
+        
+        const alertError = (message) => {
+            Swal.fire({
+                title: 'Error!',
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'ok'
+            })
+        }
+        const alertSuccess = (message) => {
+            Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'ok'
+            })
+        }
+    </script>
 
