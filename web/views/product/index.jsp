@@ -15,16 +15,16 @@
 
 <%@include file="/main/javainit.jsp" %>
 
-<%
+<%    
     Vector listProducts = new Vector();
 
-    try{
+    try {
         listProducts = PstProduct.list(0, 0, "", "");
-    } catch(Exception e){
-        System.out.println("Error: "+ e);
+    } catch (Exception e) {
+        System.out.println("Error: " + e);
     }
 %>
-    
+
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -52,7 +52,7 @@
                                 <i class="fas fa-table me-1"></i>
                                 Data Product
                             </div>
-                            <a class="btn btn-sm btn-primary" href="<%= approot %>/views/product/create.jsp">Add</a>
+                            <a class="btn btn-sm btn-primary" href="<%= approot%>/views/product/create.jsp">Add</a>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
@@ -69,27 +69,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <% 
-                                    for(int y = 0; y < listProducts.size(); y++){
-                                    
-                                        Product objProduct = (Product) listProducts.get(y);
-                                %>
-                                        <tr>
-                                            <td> <%= y + 1 %> </td>
-                                            <td> <%= objProduct.getCode() %> </td>
-                                            <td> <%= objProduct.getName() %> </td>
-                                            <td> <%= objProduct.getStock() %> </td>
-                                            <td> <%= objProduct.getPrice() %> </td>
-                                            <td> <%= objProduct.getCreatedAt() %> </td>
-                                            <td> <%= objProduct.getUpdatedAt() %> </td>
-                                            <td>
-                                                <a href="#" class="badge badge-rounded bg-primary">edit</a>
-                                                <a href="#" class="badge badge-rounded bg-danger">hapus</a>
-                                            </td>
-                                        </tr>
-                                <%
-                                    }
-                                %>
+                                    <%
+                                        for (int y = 0; y < listProducts.size(); y++) {
+
+                                            Product objProduct = (Product) listProducts.get(y);
+                                    %>
+                                    <tr>
+                                        <td> <%= y + 1%> </td>
+                                        <td> <%= objProduct.getCode()%> </td>
+                                        <td> <%= objProduct.getName()%> </td>
+                                        <td> <%= objProduct.getStock()%> </td>
+                                        <td> <%= objProduct.getPrice()%> </td>
+                                        <td> <%= objProduct.getCreatedAt()%> </td>
+                                        <td> <%= objProduct.getUpdatedAt()%> </td>
+                                        <td>
+                                            <a href="#" class="badge badge-rounded bg-primary">edit</a>
+                                            <a href="#" class="badge badge-rounded bg-danger">hapus</a>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -99,6 +99,6 @@
             <%@include file="/views/include/_footer.jsp" %>
         </div>
     </div>
-        <%@include file="/views/include/_js.jsp" %>
+    <%@include file="/views/include/_js.jsp" %>
 </body>
 

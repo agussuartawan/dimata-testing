@@ -1,8 +1,8 @@
 package com.dimata.testing.entity.masterdata;
 
-
 import com.dimata.qdep.entity.Entity;
 import java.util.Date;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,7 +13,8 @@ import java.util.Date;
  *
  * @author keys
  */
-public class Product  extends Entity {
+public class Product extends Entity {
+
     private long id = 0;
     private String code = "";
     private String name = "";
@@ -21,6 +22,7 @@ public class Product  extends Entity {
     private int stock = 0;
     private Date created_at = null;
     private Date updated_at = null;
+
     /**
      * @return the id
      */
@@ -62,7 +64,7 @@ public class Product  extends Entity {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the name
      */

@@ -3,6 +3,8 @@
     Created on : Sep 1, 2017, 11:30:21 AM
     Author     : dimata005
 --%>
+<%@page import="com.dimata.testing.entity.masterdata.Product"%>
+<%@page import="com.dimata.testing.entity.masterdata.PstProduct"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.dimata.util.Formater"%>
 <%@page import="java.util.Vector"%>
@@ -14,6 +16,14 @@
     boolean privDelete = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_HOME, AppObjInfo.G2_HOME, AppObjInfo.OBJ_HOME, AppObjInfo.COMMAND_DELETE);
     boolean privUpdate = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_HOME, AppObjInfo.G2_HOME, AppObjInfo.OBJ_HOME, AppObjInfo.COMMAND_UPDATE);
     boolean privViewMaster = true;//userSession.checkPrivG1G2ObjCommand(AppObjInfo.G1_MODUL_MASTER_DATA, AppObjInfo.G2_PROFILE_BANK, AppObjInfo.OBJ_BANK, AppObjInfo.COMMAND_VIEW);
+    
+    Vector listProducts = new Vector();
+
+    try {
+        listProducts = PstProduct.list(0, 0, "", "");
+    } catch (Exception e) {
+        System.out.println("Error: " + e);
+    }
 %>
 <html>
     <head>
@@ -52,6 +62,27 @@
                                 <div class="box-body">  
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <%
+                                        for (int y = 0; y < listProducts.size(); y++) {
+
+                                            Product objProduct = (Product) listProducts.get(y);
+                                    %>
+                                    <tr>
+                                        <td> <%= y + 1%> </td>
+                                        <td> <%= objProduct.getCode()%> </td>
+                                        <td> <%= objProduct.getName()%> </td>
+                                        <td> <%= objProduct.getStock()%> </td>
+                                        <td> <%= objProduct.getPrice()%> </td>
+                                        <td> <%= objProduct.getCreatedAt()%> </td>
+                                        <td> <%= objProduct.getUpdatedAt()%> </td>
+                                        <td>
+                                            <a href="#" class="badge badge-rounded bg-primary">edit</a>
+                                            <a href="#" class="badge badge-rounded bg-danger">hapus</a>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                    %>
                                             <hr>
                                         </div>
                                     </div>
