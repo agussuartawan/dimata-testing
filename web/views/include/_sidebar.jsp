@@ -9,23 +9,23 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Menu</div>
-                <a class="nav-link" href="<%=approot%>/views/home.jsp">
-                    <div class="sb-nav-link-icon"><i class="fa fa-home" aria-hidden="true"></i></i></div>
+                <a class="nav-link<%= is_dashboard %>" href="<%=approot%>/views/home.jsp">
+                    <div class="sb-nav-link-icon"><i class="fa fa-fw fa-home" aria-hidden="true"></i></i></div>
                     Dashboard
                 </a>
                 
-                <a class="nav-link" href="<%=approot%>/views/customer/index.jsp">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                <a class="nav-link<%= is_customers %>" href="<%=approot%>/views/customer/index.jsp">
+                    <div class="sb-nav-link-icon"><i class="fas fa-fw fa-users"></i></div>
                     Customers
                 </a>
                 
-                <a class="nav-link" href="<%=approot%>/views/product/index.jsp">
-                    <div class="sb-nav-link-icon"><i class="fa fa-th-large" aria-hidden="true"></i></div>
+                <a class="nav-link<%= is_products %>" href="<%=approot%>/views/product/index.jsp">
+                    <div class="sb-nav-link-icon"><i class="fa fa-fw fa-th-large" aria-hidden="true"></i></div>
                     Products
                 </a>
                 
-                <a class="nav-link" href="<%=approot%>/views/sale/index.jsp">
-                    <div class="sb-nav-link-icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i></i></div>
+                <a class="nav-link<%= is_sales %>" href="<%=approot%>/views/sale/index.jsp">
+                    <div class="sb-nav-link-icon"><i class="fa fa-fw fa-shopping-cart" aria-hidden="true"></i></i></div>
                     Sales
                 </a>
             </div>

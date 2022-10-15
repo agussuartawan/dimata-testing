@@ -11,8 +11,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Dashboard - SB Admin</title>
+<title>Dashboard</title>
 
+<%
+    //for sidebar active
+    String is_dashboard = " active";
+    String is_customers = "";
+    String is_products = "";
+    String is_sales = "";
+%>
 <%@include file="../views/include/_css.jsp" %>
 
 <body class="sb-nav-fixed">

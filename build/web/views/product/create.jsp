@@ -19,7 +19,13 @@
 
 <%@include file="/main/javainit.jsp" %>
 
-<%    
+<%  
+    //for sidebar active
+    String is_dashboard = "";
+    String is_customers = "";
+    String is_products = " active";
+    String is_sales = "";
+
     // untuk menampilkan message erorr atau success
     int excCode = FRMMessage.NONE;
     String msgString = "";

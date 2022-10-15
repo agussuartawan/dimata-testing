@@ -4,10 +4,10 @@
     Author     : kadek
 --%>
 
-<%@page import="com.dimata.testing.entity.masterdata.PstProduct"%>
-<%@page import="com.dimata.testing.entity.masterdata.Product"%>
-<%@page import="com.dimata.testing.form.masterdata.FrmProduct"%>
-<%@page import="com.dimata.testing.form.masterdata.CtrlProduct"%>
+<%@page import="com.dimata.testing.entity.masterdata.PstCustomer"%>
+<%@page import="com.dimata.testing.entity.masterdata.Customer"%>
+<%@page import="com.dimata.testing.form.masterdata.FrmCustomer"%>
+<%@page import="com.dimata.testing.form.masterdata.CtrlCustomer"%>
 <%@page import="com.dimata.qdep.form.FRMMessage"%>
 <%@page import="com.dimata.qdep.form.FRMQueryString"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,8 +22,8 @@
 <%  
     //for sidebar active
     String is_dashboard = "";
-    String is_customers = "";
-    String is_products = " active";
+    String is_customers = " active";
+    String is_products = "";
     String is_sales = "";
 
     // untuk menampilkan message erorr atau success
@@ -32,26 +32,26 @@
 
     // iCommand dan appUserOID untuk me ruquest data
     int iCommand = FRMQueryString.requestCommand(request);
-    long appProductOID = FRMQueryString.requestLong(request, FrmProduct.fieldNames[FrmProduct.FRM_FIELD_ID]);
+    long appCustomerOID = FRMQueryString.requestLong(request, FrmCustomer.fieldNames[FrmCustomer.FRM_FIELD_ID]);
 
-    //membuat OOP controller dan form product
-    CtrlProduct ctrlProduct = new CtrlProduct(request);
-    FrmProduct frmProduct = ctrlProduct.getForm();
+    //membuat OOP controller dan form Customer
+    CtrlCustomer ctrlCustomer = new CtrlCustomer(request);
+    FrmCustomer frmCustomer = ctrlCustomer.getForm();
 
-    //untuk meng excute data yg di terima oleh iCommand & appProductOiD
-    excCode = ctrlProduct.action(iCommand, appProductOID, 0, "Admin");
+    //untuk meng excute data yg di terima oleh iCommand & appCustomerOiD
+    excCode = ctrlCustomer.action(iCommand, appCustomerOID, 0, "Admin");
 
     //untuk menampilkan pesan
-    msgString = ctrlProduct.getMessage();
+    msgString = ctrlCustomer.getMessage();
 
-    //membuat objek/OOP dari Product
-    Product objProduct = new Product();
+    //membuat objek/OOP dari Customer
+    Customer objCustomer = new Customer();
     try {
-        if (appProductOID != 0) {
-            objProduct = PstProduct.fetchExc(appProductOID); // tanya ini
+        if (appCustomerOID != 0) {
+            objCustomer = PstCustomer.fetchExc(appCustomerOID); // tanya ini
         }
     } catch (Exception e) {
-        System.out.println("Error fetch product :" + e);
+        System.out.println("Error fetch Customer :" + e);
     }
 %>
 
@@ -60,7 +60,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Create Product - SB Admin</title>
+<title>Create Customer - SB Admin</title>
 
 <%@include file="/views/include/_css.jsp" %>
 
@@ -71,42 +71,37 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Product</h1>
+                    <h1 class="mt-4">Customer</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="<%=approot%>/views/home.jsp">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="<%=approot%>/views/product/index.jsp">Products</a></li>
+                        <li class="breadcrumb-item"><a href="<%=approot%>/views/customer/index.jsp">Customers</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Create New Product
+                            Create New Customer
                         </div>
                         <div class="card-body">
-                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="get">
+                            <form action="create.jsp" name="<%=frmCustomer.FRM_NAME_CUSTOMER%>" id="form" method="get">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
-                                <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
+                                <input type="hidden" name="<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ID]%>" value="<%= appCustomerOID%>" id="<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ID]%>" value="<%= appCustomerOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
                                 <div class="form-group mb-3">
-                                    <label for="code">Code</label>
-                                    <input type="text" class="form-control" id="code" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_CODE]%>' value="<%=objProduct.getCode()%>"  placeholder="Enter Code">
+                                    <label for="code">Name</label>
+                                    <input required type="text" class="form-control" id="code" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_NAME]%>' value="<%=objCustomer.getName()%>"  placeholder="Enter Name">
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_NAME]%>' value="<%=objProduct.getName()%>"  placeholder="Enter Name">
+                                    <label for="phone">Phone</label>
+                                    <input required type="text" class="form-control" id="phone" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_PHONE]%>' value="<%=objCustomer.getPhone()%>"  placeholder="Enter Phone">
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="stock">Stock</label>
-                                    <input type="number" class="form-control" id="stock" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_STOCK]%>' value="<%=objProduct.getStock()%>"  placeholder="Enter Stock">
+                                    <label for="address">Address</label>
+                                    <input required type="text" class="form-control" id="address" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ADDRESS]%>' value="<%=objCustomer.getAddress()%>"  placeholder="Enter Address">
                                 </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="price">Price</label>
-                                    <input type="text" class="form-control" id="price" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_PRICE]%>' value="<%=objProduct.getPrice()%>"  placeholder="Enter Price">
-                                </div>
-                                <a   href="<%= approot%>/views/product/index.jsp" class="btn btn-secondary">Back</a>                                
+                                <a   href="<%= approot%>/views/customer/index.jsp" class="btn btn-secondary">Back</a>                                
                                 <a   href="javascript:simpan();" class="btn btn-primary">Save</a>                                
                             </form>
                         </div>
@@ -127,9 +122,9 @@
             <% } %>
         }
         function simpan() {
-            document.<%=frmProduct.FRM_NAME_PRODUCT%>.command.value = "<%=Command.SAVE%>";
-            document.<%=frmProduct.FRM_NAME_PRODUCT%>.action = "create.jsp";
-            document.<%=frmProduct.FRM_NAME_PRODUCT%>.submit();
+            document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.command.value = "<%=Command.SAVE%>";
+            document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.action = "form.jsp";
+            document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.submit();
 
         }
         const alertError = (message) => {
