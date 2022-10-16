@@ -86,7 +86,7 @@ public void requestEntityObject(Product entProduct) {
         entProduct.setCode(getString(FRM_FIELD_CODE));
         entProduct.setName(getString(FRM_FIELD_NAME));
         entProduct.setStock(getInt(FRM_FIELD_STOCK));
-        entProduct.setPrice(getFloat(FRM_FIELD_PRICE));
+        entProduct.setPrice(getInt(FRM_FIELD_PRICE));
 //        entProduct.setCreatedAt(getDate(FRM_FIELD_CREATED_AT));
 //        entProduct.setUpdatedAt(getDate(FRM_FIELD_UPDATED_AT));
    } catch (Exception e) {

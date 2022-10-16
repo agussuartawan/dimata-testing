@@ -21,10 +21,7 @@
 
 <%  
     //for sidebar active
-    String is_dashboard = "";
-    String is_customers = " active";
-    String is_products = "";
-    String is_sales = "";
+    String activeState = "customers";
 
     // untuk menampilkan message erorr atau success
     int excCode = FRMMessage.NONE;

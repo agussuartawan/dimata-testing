@@ -33,23 +33,23 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
     public static final int FLD_UPDATED_AT = 6;
 
     public static String[] fieldNames = {
-        "id",
-        "code",
-        "name",
-        "stock",
-        "price",
-        "created_at",
-        "updated_at",
+            "id",
+            "code",
+            "name",
+            "stock",
+            "price",
+            "created_at",
+            "updated_at",
     };
 
     public static int[] fieldTypes = {
-        TYPE_INT + TYPE_PK + TYPE_ID + TYPE_AI,
-        TYPE_STRING,
-        TYPE_STRING,
-        TYPE_INT,
-        TYPE_FLOAT,
-        TYPE_DATE,
-        TYPE_DATE,};
+            TYPE_LONG + TYPE_PK + TYPE_ID + TYPE_AI,
+            TYPE_STRING,
+            TYPE_STRING,
+            TYPE_INT,
+            TYPE_FLOAT,
+            TYPE_DATE,
+            TYPE_DATE, };
 
     public PstProduct() {
     }
@@ -136,7 +136,7 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
                 pstProduct.setString(FLD_NAME, entProduct.getName());
                 pstProduct.setInt(FLD_STOCK, (int) entProduct.getStock());
                 pstProduct.setFloat(FLD_PRICE, entProduct.getPrice());
-//                pstProduct.setDate(FLD_CREATED_AT, entProduct.getCreatedAt());
+                // pstProduct.setDate(FLD_CREATED_AT, entProduct.getCreatedAt());
                 pstProduct.setDate(FLD_UPDATED_AT, date);
                 pstProduct.update();
                 return entProduct.getOID();
@@ -174,9 +174,9 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
 
     public static synchronized long insertExc(Product entProduct) throws DBException {
         try {
-            Date date = new Date();            
+            Date date = new Date();
             PstProduct pstProduct = new PstProduct(0);
-            
+
             pstProduct.setString(FLD_CODE, entProduct.getCode());
             pstProduct.setString(FLD_NAME, entProduct.getName());
             pstProduct.setInt(FLD_STOCK, (int) entProduct.getStock());
@@ -203,7 +203,7 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
             entProduct.setCode(rs.getString(PstProduct.fieldNames[PstProduct.FLD_CODE]));
             entProduct.setName(rs.getString(PstProduct.fieldNames[PstProduct.FLD_NAME]));
             entProduct.setStock(rs.getInt(PstProduct.fieldNames[PstProduct.FLD_STOCK]));
-            entProduct.setPrice(rs.getFloat(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
+            entProduct.setPrice(rs.getInt(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
             entProduct.setCreatedAt(rs.getDate(PstProduct.fieldNames[PstProduct.FLD_CREATED_AT]));
             entProduct.setUpdatedAt(rs.getDate(PstProduct.fieldNames[PstProduct.FLD_UPDATED_AT]));
         } catch (Exception e) {
@@ -243,80 +243,82 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
         return new Vector();
     }
 
-    //  public static Vector listWithJoinSales(int limitStart, int recordToGet, String whereClause, String order) {
-    //      Vector lists = new Vector();
-    //      DBResultSet dbrs = null;
-    //      try {
-    //          String sql = "SELECT products.*,sale_detail.* FROM products  \n" +
-    //                      "INNER JOIN sale_detail \n" +
-    //                      "ON sale_detail.`product_id` = product.`id` " ;
-    //           if (whereClause != null && whereClause.length() > 0) {
-    //              sql = sql + " WHERE " + whereClause;
-    //          }
-    //          if (order != null && order.length() > 0) {
-    //              sql = sql + " ORDER BY " + order;
-    //          }
-    //          if (limitStart == 0 && recordToGet == 0) {
-    //              sql = sql + "";
-    //          } else {
-    //              sql = sql + " LIMIT " + limitStart + "," + recordToGet;
-    //          }
-    //          dbrs = DBHandler.execQueryResult(sql);
-    //          ResultSet rs = dbrs.getResultSet();
-    //          while (rs.next()) {
-    //              Product entProduct = new Product();
-    //                  entProduct.setOID(rs.getLong(PstProduct.fieldNames[PstProduct.FLD_ID]));
-    //                  entProduct.setCode(rs.getString(PstProduct.fieldNames[PstProduct.FLD_CODE]));
-    //                  entProduct.setPassword(rs.getString(PstProduct.fieldNames[PstProduct.FLD_NAME]));
-    //                  entProduct.setFullName(rs.getString(PstProduct.fieldNames[PstProduct.FLD_STOCK]));
-    //                  entProduct.setEmail(rs.getString(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
-    //                  entProduct.setNamaKaryawan(rs.getString("NAMA_KARYAWAN"));
-    //              lists.add(entProduct);
-    //          }
-    //          rs.close();
-    //          return lists;
-    //      } catch (Exception e) {
-    //          System.out.println(e);
-    //      } finally {
-    //          DBResultSet.close(dbrs);
-    //      }
-    //      return new Vector();
-    //  }
-    //  public static Vector listKaryawan(int limitStart, int recordToGet, String whereClause, String order) {
-    //      Vector lists = new Vector();
-    //      DBResultSet dbrs = null;
-    //      try {
-    //          String sql = "SELECT * FROM karyawan " ;
-    //          if (whereClause != null && whereClause.length() > 0) {
-    //              sql = sql + " WHERE " + whereClause;
-    //          }
-    //          if (order != null && order.length() > 0) {
-    //              sql = sql + " ORDER BY " + order;
-    //          }
-    //          if (limitStart == 0 && recordToGet == 0) {
-    //              sql = sql + "";
-    //          } else {
-    //              sql = sql + " LIMIT " + limitStart + "," + recordToGet;
-    //          }
-    //          dbrs = DBHandler.execQueryResult(sql);
-    //          ResultSet rs = dbrs.getResultSet();
-    //          while (rs.next()) {
-    //              Karyawan entKaryawan= new Karyawan();
-    //              entKaryawan.setOID(rs.getLong("ID_KARYAWAN"));
-    //              entKaryawan.setNama(rs.getString("NAMA"));
-    //              entKaryawan.setUmur(rs.getInt("UMUR"));
-    //              entKaryawan.setAlamat(rs.getString("ALAMAT"));
-    //              lists.add(entKaryawan);
-    //          }
-    //          rs.close();
-    //          return lists;
-    //      } catch (Exception e) {
-    //          System.out.println(e);
-    //      } finally {
-    //          DBResultSet.close(dbrs);
-    //      }
-    //      return new Vector();
-    //  }
+    // public static Vector listWithJoinSales(int limitStart, int recordToGet,
+    // String whereClause, String order) {
+    // Vector lists = new Vector();
+    // DBResultSet dbrs = null;
+    // try {
+    // String sql = "SELECT products.*,sale_detail.* FROM products \n" +
+    // "INNER JOIN sale_detail \n" +
+    // "ON sale_detail.`product_id` = product.`id` " ;
+    // if (whereClause != null && whereClause.length() > 0) {
+    // sql = sql + " WHERE " + whereClause;
+    // }
+    // if (order != null && order.length() > 0) {
+    // sql = sql + " ORDER BY " + order;
+    // }
+    // if (limitStart == 0 && recordToGet == 0) {
+    // sql = sql + "";
+    // } else {
+    // sql = sql + " LIMIT " + limitStart + "," + recordToGet;
+    // }
+    // dbrs = DBHandler.execQueryResult(sql);
+    // ResultSet rs = dbrs.getResultSet();
+    // while (rs.next()) {
+    // Product entProduct = new Product();
+    // entProduct.setOID(rs.getLong(PstProduct.fieldNames[PstProduct.FLD_ID]));
+    // entProduct.setCode(rs.getString(PstProduct.fieldNames[PstProduct.FLD_CODE]));
+    // entProduct.setPassword(rs.getString(PstProduct.fieldNames[PstProduct.FLD_NAME]));
+    // entProduct.setFullName(rs.getString(PstProduct.fieldNames[PstProduct.FLD_STOCK]));
+    // entProduct.setEmail(rs.getString(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
+    // entProduct.setNamaKaryawan(rs.getString("NAMA_KARYAWAN"));
+    // lists.add(entProduct);
+    // }
+    // rs.close();
+    // return lists;
+    // } catch (Exception e) {
+    // System.out.println(e);
+    // } finally {
+    // DBResultSet.close(dbrs);
+    // }
+    // return new Vector();
+    // }
+    // public static Vector listKaryawan(int limitStart, int recordToGet, String
+    // whereClause, String order) {
+    // Vector lists = new Vector();
+    // DBResultSet dbrs = null;
+    // try {
+    // String sql = "SELECT * FROM karyawan " ;
+    // if (whereClause != null && whereClause.length() > 0) {
+    // sql = sql + " WHERE " + whereClause;
+    // }
+    // if (order != null && order.length() > 0) {
+    // sql = sql + " ORDER BY " + order;
+    // }
+    // if (limitStart == 0 && recordToGet == 0) {
+    // sql = sql + "";
+    // } else {
+    // sql = sql + " LIMIT " + limitStart + "," + recordToGet;
+    // }
+    // dbrs = DBHandler.execQueryResult(sql);
+    // ResultSet rs = dbrs.getResultSet();
+    // while (rs.next()) {
+    // Karyawan entKaryawan= new Karyawan();
+    // entKaryawan.setOID(rs.getLong("ID_KARYAWAN"));
+    // entKaryawan.setNama(rs.getString("NAMA"));
+    // entKaryawan.setUmur(rs.getInt("UMUR"));
+    // entKaryawan.setAlamat(rs.getString("ALAMAT"));
+    // lists.add(entKaryawan);
+    // }
+    // rs.close();
+    // return lists;
+    // } catch (Exception e) {
+    // System.out.println(e);
+    // } finally {
+    // DBResultSet.close(dbrs);
+    // }
+    // return new Vector();
+    // }
     public static int getCount(String whereClause) {
         DBResultSet dbrs = null;
         try {
@@ -386,8 +388,8 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
         }
         return cmd;
     }
-//Add by Eri Yudi 2020-07-01
-//Method for API
+    // Add by Eri Yudi 2020-07-01
+    // Method for API
 
     public static JSONObject fetchJSON(Product entProduct) {
         JSONObject object = new JSONObject();
@@ -397,8 +399,14 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
             object.put(PstProduct.fieldNames[PstProduct.FLD_NAME], "" + entProduct.getName());
             object.put(PstProduct.fieldNames[PstProduct.FLD_STOCK], "" + entProduct.getStock());
             object.put(PstProduct.fieldNames[PstProduct.FLD_PRICE], "" + entProduct.getPrice());
-            object.put(PstProduct.fieldNames[PstProduct.FLD_CREATED_AT], (entProduct.getCreatedAt() != null) ? Formater.formatDate(entProduct.getCreatedAt(), "yyyy-MM-dd HH:mm:ss") : "0000-00-00 00:00:00");
-            object.put(PstProduct.fieldNames[PstProduct.FLD_UPDATED_AT], (entProduct.getUpdatedAt() != null) ? Formater.formatDate(entProduct.getUpdatedAt(), "yyyy-MM-dd HH:mm:ss") : "0000-00-00 00:00:00");
+            object.put(PstProduct.fieldNames[PstProduct.FLD_CREATED_AT],
+                    (entProduct.getCreatedAt() != null)
+                            ? Formater.formatDate(entProduct.getCreatedAt(), "yyyy-MM-dd HH:mm:ss")
+                            : "0000-00-00 00:00:00");
+            object.put(PstProduct.fieldNames[PstProduct.FLD_UPDATED_AT],
+                    (entProduct.getUpdatedAt() != null)
+                            ? Formater.formatDate(entProduct.getUpdatedAt(), "yyyy-MM-dd HH:mm:ss")
+                            : "0000-00-00 00:00:00");
         } catch (Exception exc) {
             System.out.println("Err :" + exc);
         }
@@ -431,9 +439,11 @@ public class PstProduct extends DBHandler implements I_DBInterface, I_DBType, I_
             entProduct.setOID(Long.valueOf((String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_ID])));
             entProduct.setName((String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_NAME]));
             entProduct.setStock((Integer) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_STOCK]));
-            entProduct.setPrice((float) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
-            entProduct.setCreatedAt(Formater.formatDate((String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_CREATED_AT]), "yyyy-MM-dd HH:mm:ss"));
-            entProduct.setUpdatedAt(Formater.formatDate((String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_UPDATED_AT]), "yyyy-MM-dd HH:mm:ss"));
+            entProduct.setPrice((int) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_PRICE]));
+            entProduct.setCreatedAt(Formater.formatDate(
+                    (String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_CREATED_AT]), "yyyy-MM-dd HH:mm:ss"));
+            entProduct.setUpdatedAt(Formater.formatDate(
+                    (String) jsonObject.get(PstProduct.fieldNames[PstProduct.FLD_UPDATED_AT]), "yyyy-MM-dd HH:mm:ss"));
         } catch (Exception exc) {
             System.out.println("Err :" + exc);
         }

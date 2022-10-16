@@ -15,10 +15,7 @@
 
 <%
     //for sidebar active
-    String is_dashboard = " active";
-    String is_customers = "";
-    String is_products = "";
-    String is_sales = "";
+    String activeState = "dashboard";
 %>
 <%@include file="../views/include/_css.jsp" %>
 

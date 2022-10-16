@@ -21,10 +21,7 @@
 
 <%  
     //for sidebar active
-    String is_dashboard = "";
-    String is_customers = "";
-    String is_products = " active";
-    String is_sales = "";
+    String activeState = "products";
 
     // untuk menampilkan message erorr atau success
     int excCode = FRMMessage.NONE;
@@ -83,9 +80,9 @@
                             Create New Product
                         </div>
                         <div class="card-body">
-                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="get">
+                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="POST">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
-                                <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
+                                <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
                                 <div class="form-group mb-3">
                                     <label for="code">Code</label>
