@@ -80,7 +80,7 @@
                             Create New Product
                         </div>
                         <div class="card-body">
-                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="POST">
+                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="get">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
                                 <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
@@ -104,7 +104,7 @@
                                     <input type="text" class="form-control" id="price" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_PRICE]%>' value="<%=objProduct.getPrice()%>"  placeholder="Enter Price">
                                 </div>
                                 <a   href="<%= approot%>/views/product/index.jsp" class="btn btn-secondary">Back</a>                                
-                                <a   href="javascript:simpan();" class="btn btn-primary">Save</a>                                
+                                <a   href="javascript:simpan()" class="btn btn-primary" id="btn-save">Save</a>                                
                             </form>
                         </div>
                     </div>
@@ -123,6 +123,7 @@
                 alertSuccess('Data save successfully')
             <% } %>
         }
+        
         function simpan() {
             document.<%=frmProduct.FRM_NAME_PRODUCT%>.command.value = "<%=Command.SAVE%>";
             document.<%=frmProduct.FRM_NAME_PRODUCT%>.action = "create.jsp";

@@ -36,7 +36,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
             "id",
             "customer_id",
             "code",
-            "date",
+            "inv_date",
             "grand_total",
             "created_at",
             "updated_at",
@@ -109,7 +109,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
             entSale.setOID(oid);
             entSale.setCode(pstSale.getString(FLD_CODE));
             entSale.setCustomerId(pstSale.getLong(FLD_CUSTOMER_ID));
-            entSale.setDate(pstSale.getDate(FLD_DATE));
+            entSale.setInvDate(pstSale.getDate(FLD_DATE));
             entSale.setGrandTotal(pstSale.getfloat(FLD_GRAND_TOTAL));
             entSale.setCreatedAt(pstSale.getDate(FLD_CREATED_AT));
             entSale.setUpdatedAt(pstSale.getDate(FLD_UPDATED_AT));
@@ -134,7 +134,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
                 PstSale pstSale = new PstSale(entSale.getOID());
                 pstSale.setString(FLD_CODE, entSale.getCode());
                 pstSale.setLong(FLD_CUSTOMER_ID, entSale.getCustomerId());
-                pstSale.setDate(FLD_DATE, entSale.getDate());
+                pstSale.setDate(FLD_DATE, entSale.getInvDate());
                 pstSale.setFloat(FLD_GRAND_TOTAL, entSale.getGrandTotal());
                 // pstSale.setDate(FLD_CREATED_AT, entSale.getCreatedAt());
                 pstSale.setDate(FLD_UPDATED_AT, date);
@@ -176,11 +176,12 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
         try {
             Date date = new Date();
             PstSale pstSale = new PstSale(0);
-
+            
+            
             pstSale.setString(FLD_CODE, entSale.getCode());
             pstSale.setLong(FLD_CUSTOMER_ID, entSale.getCustomerId());
-            pstSale.setDate(FLD_DATE, entSale.getDate());
-            pstSale.setFloat(FLD_GRAND_TOTAL, entSale.getGrandTotal());
+            pstSale.setDate(FLD_DATE, date);
+            pstSale.setFloat(FLD_GRAND_TOTAL, 0);
             pstSale.setDate(FLD_CREATED_AT, date);
             pstSale.setDate(FLD_UPDATED_AT, date);
             pstSale.insert();
@@ -202,7 +203,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
             entSale.setOID(rs.getLong(PstSale.fieldNames[PstSale.FLD_ID]));
             entSale.setCode(rs.getString(PstSale.fieldNames[PstSale.FLD_CODE]));
             entSale.setCustomerId(rs.getLong(PstSale.fieldNames[PstSale.FLD_CUSTOMER_ID]));
-            entSale.setDate(rs.getDate(PstSale.fieldNames[PstSale.FLD_DATE]));
+            entSale.setInvDate(rs.getDate(PstSale.fieldNames[PstSale.FLD_DATE]));
             entSale.setGrandTotal(rs.getFloat(PstSale.fieldNames[PstSale.FLD_GRAND_TOTAL]));
             entSale.setCreatedAt(rs.getDate(PstSale.fieldNames[PstSale.FLD_CREATED_AT]));
             entSale.setUpdatedAt(rs.getDate(PstSale.fieldNames[PstSale.FLD_UPDATED_AT]));
@@ -247,7 +248,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
         Vector lists = new Vector();
         DBResultSet dbrs = null;
         try {
-            String sql = "SELECT sales.*,customers.`name`  AS customer_name FROM sales  \n" +
+            String sql = "SELECT sales.*, customers.`name` AS customer_name, customers.`address` AS customer_address, customers.phone AS customer_phone FROM sales  \n" +
                     "INNER JOIN customers \n" +
                     "ON customers.`id` = sales.`customer_id` ";
             if (whereClause != null && whereClause.length() > 0) {
@@ -268,7 +269,9 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
                 entSale.setOID(rs.getLong(PstSale.fieldNames[PstSale.FLD_ID]));
                 entSale.setCode(rs.getString(PstSale.fieldNames[PstSale.FLD_CODE]));
                 entSale.setCustomerName(rs.getString("customer_name"));
-                entSale.setDate(rs.getDate(PstSale.fieldNames[PstSale.FLD_DATE]));
+                entSale.setCustomerAddress(rs.getString("customer_address"));
+                entSale.setCustomerPhone(rs.getString("customer_phone"));
+                entSale.setInvDate(rs.getDate(PstSale.fieldNames[PstSale.FLD_DATE]));
                 entSale.setGrandTotal(rs.getFloat(PstSale.fieldNames[PstSale.FLD_GRAND_TOTAL]));
                 lists.add(entSale);
             }
@@ -396,7 +399,7 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
             object.put(PstSale.fieldNames[PstSale.FLD_ID], "" + entSale.getOID());
             object.put(PstSale.fieldNames[PstSale.FLD_CODE], "" + entSale.getCode());
             object.put(PstSale.fieldNames[PstSale.FLD_CUSTOMER_ID], "" + entSale.getCustomerId());
-            object.put(PstSale.fieldNames[PstSale.FLD_DATE], "" + entSale.getDate());
+            object.put(PstSale.fieldNames[PstSale.FLD_DATE], "" + entSale.getInvDate());
             object.put(PstSale.fieldNames[PstSale.FLD_GRAND_TOTAL], "" + entSale.getGrandTotal());
             object.put(PstSale.fieldNames[PstSale.FLD_CREATED_AT],
                     (entSale.getCreatedAt() != null)
@@ -439,8 +442,8 @@ public class PstSale extends DBHandler implements I_DBInterface, I_DBType, I_Per
             entSale.setCode((String) jsonObject.get(PstSale.fieldNames[PstSale.FLD_CODE]));
             entSale.setCustomerId((Long) jsonObject.get(PstSale.fieldNames[PstSale.FLD_CUSTOMER_ID]));
             entSale.setGrandTotal((float) jsonObject.get(PstSale.fieldNames[PstSale.FLD_GRAND_TOTAL]));
-            entSale.setDate(Formater.formatDate(
-                    (String) jsonObject.get(PstSale.fieldNames[PstSale.FLD_DATE]), "yyyy-MM-dd HH:mm:ss"));
+            entSale.setInvDate(Formater.formatDate(
+                    (String) jsonObject.get(PstSale.fieldNames[PstSale.FLD_DATE]), "yyyy-MM-dd"));
             entSale.setCreatedAt(Formater.formatDate(
                     (String) jsonObject.get(PstSale.fieldNames[PstSale.FLD_CREATED_AT]), "yyyy-MM-dd HH:mm:ss"));
             entSale.setUpdatedAt(Formater.formatDate(

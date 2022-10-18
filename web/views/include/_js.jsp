@@ -13,3 +13,4 @@
 <script src="<%= approot %>/assets/js/datatables-simple-demo.js"></script>        
 <script src="https://kit.fontawesome.com/0158c268ff.js" crossorigin="anonymous"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

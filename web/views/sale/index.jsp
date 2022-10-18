@@ -127,10 +127,11 @@
                                             <td> <%= y + 1%> </td>
                                             <td> <%= objSale.getCode()%> </td>
                                             <td> <%= objSale.getCustomerName()%> </td>
-                                            <td> <%= objSale.getDate()%> </td>
+                                            <td> <%= objSale.getInvDate()%> </td>
                                             <td> <%= objSale.getGrandTotal()%> </td>
                                             <td>
                                                 <a href="<%=approot%>/views/sale/create.jsp?<%=FrmSale.fieldNames[FrmSale.FRM_FIELD_ID]%>=<%=objSale.getOID()%>"><span class="badge bg-primary">edit</span></a>
+                                                <a href="<%=approot%>/views/sale/createSaleDetail.jsp?sale_code=<%=objSale.getCode()%>"><span class="badge bg-info">detail</span></a>
                                                 <a href="javascript:deleteSale('<%= objSale.getOID() %>')"><span class="badge bg-danger">delete</span></a>
                                             </td>
                                         </tr>

@@ -2,6 +2,7 @@ package com.dimata.testing.entity.masterdata;
 
 import com.dimata.qdep.entity.Entity;
 import java.util.Date;
+import java.util.Vector;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,7 +18,7 @@ public class Sale extends Entity {
 
     private long id = 0;
     private String code = "";
-    private Date date = null;
+    private Date inv_date;
     private float grand_total = 0;
     private Date created_at = null;
     private Date updated_at = null;
@@ -58,15 +59,15 @@ public class Sale extends Entity {
     /**
      * @return the name
      */
-    public Date getDate() {
-        return date;
+    public Date getInvDate() {
+        return inv_date;
     }
 
     /**
      * @param name the name to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setInvDate(Date inv_date) {
+        this.inv_date = inv_date;
     }
 
     /**

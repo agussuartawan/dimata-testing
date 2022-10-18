@@ -13,6 +13,8 @@ import com.dimata.testing.entity.masterdata.Sale;
 import com.dimata.qdep.form.FRMHandler;
 import com.dimata.qdep.form.I_FRMInterface;
 import com.dimata.qdep.form.I_FRMType;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
@@ -28,7 +30,7 @@ public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
             "id",
             "customer_id",
             "code",
-            "date",
+            "inv_date",
             "grand_total",
     };
 
@@ -38,6 +40,7 @@ public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
             TYPE_STRING,
             TYPE_DATE,
             TYPE_FLOAT,
+
     };
 
     public FrmSale() {
@@ -78,7 +81,7 @@ public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
             entSale.setOID(getLong(FRM_FIELD_ID));
             entSale.setCode(getString(FRM_FIELD_CODE));
             entSale.setCustomerId(getLong(FRM_FIELD_CUSTOMER_ID));
-            entSale.setDate(getDate(FRM_FIELD_DATE));
+            entSale.setInvDate(getDate(FRM_FIELD_DATE));
             entSale.setGrandTotal(getFloat(FRM_FIELD_GRAND_TOTAL));
         } catch (Exception e) {
             System.out.println("Error on requestEntityObject : " + e.toString());

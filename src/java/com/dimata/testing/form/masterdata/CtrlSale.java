@@ -37,17 +37,20 @@ public class CtrlSale extends Control implements I_Language {
     private int start;
     private String msgString;
     private Sale entSale;
-    private PstSale pstSale;
+    
+    private PstSale pstSale;  
+
     private FrmSale frmSale;
     int language = LANGUAGE_DEFAULT;
 
     public CtrlSale(HttpServletRequest request) {
         msgString = "";
         entSale = new Sale();
+        
         try {
             pstSale = new PstSale(0);
         } catch (Exception e) {
-            ;
+            
         }
         frmSale = new FrmSale(request, entSale);
     }
