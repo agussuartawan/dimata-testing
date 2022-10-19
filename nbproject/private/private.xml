@@ -3,17 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/sale/index.jsp</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/entity/masterdata/PstSale.java</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/sale/create.jsp</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/form/masterdata/FrmSale.java</file>
+            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/sale/show.jsp</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/form/masterdata/FrmSaleDetail.java</file>
-            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/entity/masterdata/SaleDetail.java</file>
+            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/sale/report.jsp</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/form/masterdata/CtrlSaleDetail.java</file>
+            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/product/create.jsp</file>
+            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/product/index.jsp</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/entity/masterdata/Sale.java</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/form/masterdata/CtrlSale.java</file>
             <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/web/views/sale/createSaleDetail.jsp</file>
-            <file>file:/C:/Users/kadek/OneDrive/Dokumen/NetBeansProjects/dimata-testing/src/java/com/dimata/testing/entity/masterdata/PstSaleDetail.java</file>
         </group>
     </open-files>
 </project-private>

@@ -80,10 +80,11 @@
                             Create New Product
                         </div>
                         <div class="card-body">
-                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="get">
+                            <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="POST">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
                                 <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
+
                                 <div class="form-group mb-3">
                                     <label for="code">Code</label>
                                     <input type="text" class="form-control" id="code" name='<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_CODE]%>' value="<%=objProduct.getCode()%>"  placeholder="Enter Code">
@@ -120,7 +121,14 @@
             <% if (excCode > 0 && iCommand != Command.NONE) { %>
                 alertError('<%=msgString%>')
             <% } else if (iCommand != Command.NONE) { %>
-                alertSuccess('Data save successfully')
+                Swal.fire({
+                    title: "Success",
+                    text: "Data saved",
+                    icon: 'success',
+                    confirmButtonText: 'ok'
+                }).then(function() {
+                    window.location.href = "<%= approot %>/views/product/index.jsp";
+                });
             <% } %>
         }
         
@@ -135,14 +143,6 @@
                 title: 'Error!',
                 text: message,
                 icon: 'error',
-                confirmButtonText: 'ok'
-            })
-        }
-        const alertSuccess = (message) => {
-            Swal.fire({
-                title: 'Success!',
-                text: message,
-                icon: 'success',
                 confirmButtonText: 'ok'
             })
         }

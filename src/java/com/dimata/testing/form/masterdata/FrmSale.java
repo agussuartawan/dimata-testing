@@ -38,7 +38,7 @@ public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
             TYPE_LONG,
             TYPE_LONG,
             TYPE_STRING,
-            TYPE_DATE,
+            TYPE_STRING,
             TYPE_FLOAT,
 
     };
@@ -81,7 +81,7 @@ public class FrmSale extends FRMHandler implements I_FRMInterface, I_FRMType {
             entSale.setOID(getLong(FRM_FIELD_ID));
             entSale.setCode(getString(FRM_FIELD_CODE));
             entSale.setCustomerId(getLong(FRM_FIELD_CUSTOMER_ID));
-            entSale.setInvDate(getDate(FRM_FIELD_DATE));
+            entSale.setInvDate(getString(FRM_FIELD_DATE));
             entSale.setGrandTotal(getFloat(FRM_FIELD_GRAND_TOTAL));
         } catch (Exception e) {
             System.out.println("Error on requestEntityObject : " + e.toString());

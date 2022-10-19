@@ -43,7 +43,6 @@
     
     FrmSale frmSale = ctrlSale.getForm();
 
-
     //untuk meng excute data yg di terima oleh iCommand & appSaleOiD
     excCode = ctrlSale.action(iCommand, appSaleOID, 0, "Admin");
 
@@ -55,6 +54,16 @@
         listCustomers = PstCustomer.list(0, 0, "", "");
     } catch (Exception exc) {
         System.out.println("Error: "+exc);
+    }
+
+    //membuat objek/OOP dari Product
+    Sale objSale = new Sale();
+    try {
+        if (appSaleOID != 0) {
+            objSale = PstSale.fetchExc(appSaleOID); // tanya ini
+        }
+    } catch (Exception e) {
+        System.out.println("Error fetch sale :" + e);
     }
 %>
     
@@ -89,10 +98,11 @@
                                 New Sale
                         </div>
                         <div class="card-body">
-                            <form name="<%=frmSale.FRM_NAME_SALE%>" method="get" action="create.jsp" >
-                                <input type="hidden" name="command" id="command" value="4">
-                                <input type="hidden" name="sale_id" id="command" value="<%= appSaleOID %>">
+                            <form name="<%=frmSale.FRM_NAME_SALE%>" method="GET" action="create.jsp" >
+                                <input type="hidden" name="command" id="command" value="<%= iCommand %>">
+                                <input type="hidden" name="sale_id" id="sale_id" value="<%= appSaleOID %>">
                                 <input type="hidden" name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_ID]%>" id="<%=frmSale.fieldNames[frmSale.FRM_FIELD_ID]%>" value="<%= appSaleOID %>">
+                                <input type="hidden" name="approot" id="approot" value="<%= approot %>">
 
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -100,32 +110,38 @@
                                           <label for="customer_id">Customer</label>
                                           <select name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_CUSTOMER_ID]%>" id="customer_id" class="form-control">
                                             <% 
+                                                String selected;
                                                 for(int i = 0; i < listCustomers.size(); i++){
-                                                Customer objCustomer = (Customer) listCustomers.get(i);
+                                                    Customer objCustomer = (Customer) listCustomers.get(i);
+                                                    if(objSale.getCustomerId() == objCustomer.getOID()){
+                                                        selected = "selected";
+                                                    } else {
+                                                        selected = "";
+                                                    }
                                             %>
-                                                <option value="<%= objCustomer.getOID() %>"><%= objCustomer.getName() %></option>
-                                            <% } %>
+                                                <option <%= selected %> value="<%= objCustomer.getOID() %>"><%= objCustomer.getName() %></option>
+                                            <%  }  %>
                                           </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                           <label for="date">Date</label>
-                                          <input type="date" class="form-control" id="date" name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_DATE]%>">
+                                          <input type="date" class="form-control" id="date" name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_DATE]%>" value="<%=objSale.getInvDate()%>">
                                         </div>
                                     </div>
 
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="code">Invoice Code</label>
-                                            <input type="text" class="form-control" id="code" name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_CODE]%>">
+                                            <input type="text" class="form-control" id="code" name="<%=frmSale.fieldNames[frmSale.FRM_FIELD_CODE]%>" value="<%=objSale.getCode()%>">
                                         </div>
                                     </div>
                                 </div>
                                 <hr>
                                 
                                 <div class="d-flex justify-content-end">
-                                    <a href="<%= approot %>/views/sale/create.jsp" class="btn btn-secondary me-2">Cancel</a>
+                                    <a href="<%= approot %>/views/sale/index.jsp" class="btn btn-secondary me-2">Cancel</a>
                                     <a class="btn btn-primary" id="btn-save" href="javascript:simpan();">Next</a>
                                 </div>
                             </form>
@@ -140,23 +156,28 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
         <script>
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const code = urlParams.get('code');
-        window.onload = function(e){ 
-            <% if (excCode > 0 && iCommand != Command.NONE) { %>
-                alertError('<%=msgString%>')
-            <% } else if (iCommand != Command.NONE) { %>
-                alert('Data save successfully');
-                window.location.href = "<%= approot %>/views/sale/createSaleDetail.jsp?sale_code="+code;
-            <% } %>
-        }
-        function simpan() {
-            document.<%=frmSale.FRM_NAME_SALE%>.command.value = "<%=Command.SAVE%>";
-            document.<%=frmSale.FRM_NAME_SALE%>.action = "create.jsp";
-            document.<%=frmSale.FRM_NAME_SALE%>.submit();
-        }
-            let row = 1;
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const code = urlParams.get('code');
+            window.onload = function(e){ 
+                <% if (excCode > 0 && iCommand != Command.NONE) { %>
+                    alertError('<%=msgString%>')
+                <% } else if (iCommand != Command.NONE) { %>
+                    Swal.fire({
+                        title: "Success",
+                        text: "Data saved",
+                        icon: 'success',
+                        confirmButtonText: 'ok'
+                    }).then(function() {
+                        window.location.href = "<%= approot %>/views/sale/createSaleDetail.jsp?sale_code="+code;
+                    });
+                <% } %>
+            }
+            function simpan() {
+                document.<%=frmSale.FRM_NAME_SALE%>.command.value = "<%=Command.SAVE%>";
+                document.<%=frmSale.FRM_NAME_SALE%>.action = "create.jsp";
+                document.<%=frmSale.FRM_NAME_SALE%>.submit();
+            }
 
             $(document).ready(function() {
                 makeSelect2Customer();
@@ -183,14 +204,6 @@
                     title: 'Error!',
                     text: message,
                     icon: 'error',
-                    confirmButtonText: 'ok'
-                })
-            }
-            const alertSuccess = (message) => {
-                Swal.fire({
-                    title: 'Success!',
-                    text: message,
-                    icon: 'success',
                     confirmButtonText: 'ok'
                 })
             }

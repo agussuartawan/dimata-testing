@@ -100,12 +100,23 @@
     <div id="layoutSidenav">
         <%@include file="/views/include/_sidebar.jsp" %>
         <div id="layoutSidenav_content">
-            <main>
+            <main id="element-to-print">
                 <div class="container-fluid px-4">
                     <div class="card mb-4 mt-4">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between">
+                            <div>
                                 <i class="fas fa-table me-1"></i>
                                 Sale Detail For <span id="saleCode" class="font-wight-bold"></span>
+                            </div>
+
+                            <div>
+                            <% 
+                                for(int i = 0; i < listSales.size(); i++){
+                                    Sale objSale = (Sale) listSales.get(i);
+                            %>
+                                <a href="<%= approot %>/views/sale/show.jsp?id=<%= objSale.getOID() %>" target="_blank" id="btn-print" class="btn btn-danger">Print</a>
+                            <% } %>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -154,7 +165,7 @@
                                 <% } %>
                             </div>
                             <hr>
-                            <form name="<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>" method="get" action="create.jsp" >
+                            <form name="<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>" method="POST" action="create.jsp" >
                                 <input type="hidden" name="command" id="command" value="<%= iCommand %>">
                                 <input type="hidden" name="oidDeleteSaleDetail" id="privdelete" value="<%= oidDeleteSaleDetail %>">
                                 <% 
@@ -174,7 +185,7 @@
                                                 for(int i = 0; i < listProducts.size(); i++){
                                                 Product objProduct = (Product) listProducts.get(i);
                                             %>
-                                                <option value="<%= objProduct.getOID() %>"><%= objProduct.getName() %></option>
+                                                <option value="<%= objProduct.getOID() %>" product-price="<%= objProduct.getPrice() %>"><%= objProduct.getName() %></option>
                                             <% } %>
                                           </select>
                                         </div>
@@ -182,21 +193,21 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                           <label for="qty">Qty</label>
-                                          <input type="number" class="form-control" id="qty" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_QTY]%>">
+                                          <input type="number" class="form-control" id="qty" value="0" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_QTY]%>">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label for="price">Price</label>
-                                            <input type="text" class="form-control" id="price" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_PRICE]%>">
+                                            <input type="text" class="form-control" id="price" value="0" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_PRICE]%>">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label for="subtotal">Subtotal</label>
-                                            <input type="text" class="form-control" id="subtotal" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_SUBTOTAL]%>">
+                                            <input type="text" class="form-control" id="subtotal" disabled>
                                         </div>
                                     </div>
 
@@ -207,27 +218,24 @@
                                         </div>
                                     </div>
                                 </div>
-                            <%-- </form> --%>
                             <hr>
                             <div class="row">
                                 <div class="col">
-                                    <%-- <form name="listSaleDetail" id="listSaleDetail">
-                                        <input type="hidden" name="command" id="command" value="<%= Command.NONE%>">
-                                        <input type='hidden' name='oidDeleteSaleDetail' id='privdelete' value='<%= oidDeleteSaleDetail %>'> --%>
-                                        <table class="table">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Product</th>
                                                     <th>Qty</th>
                                                     <th>Price</th>
                                                     <th>Subtotal</th>
-                                                    <th></th>
+                                                    <th>#</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% 
-                                                    for(int i = 0; i < listSaleDetails.size(); i++){
-                                                        SaleDetail objSaleDetail = (SaleDetail) listSaleDetails.get(i); 
+                                                    if(listSaleDetails.size() > 0){
+                                                        for(int i = 0; i < listSaleDetails.size(); i++){
+                                                            SaleDetail objSaleDetail = (SaleDetail) listSaleDetails.get(i); 
                                                 %>
                                                     <tr>
                                                         <td><%= objSaleDetail.getProductName() %></td>
@@ -240,10 +248,20 @@
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                <% 
+                                                        }
+                                                    } else { 
+                                                %>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">No data available.</td>
+                                                    </tr>
                                                 <% } %>
                                             </tbody>
                                         </table>
-                                    </form
+                                    </form>
+                                    <div class="d-flex justify-content-center">
+                                        <a href="<%= approot %>/views/sale/index.jsp" class="btn btn-success">Done</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -257,47 +275,65 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
         <script>
-        window.onload = function(e){ 
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const code = urlParams.get('sale_code');
-            $("#sale_code").val(code);
-            $("#saleCode").html(code);
-            <% if (excCode > 0 && iCommand != Command.NONE) { %>
-                alertError('<%=msgString%>')
-            <% } else if (iCommand != Command.NONE) { %>
-               window.location=document.referrer;
-            <% } %>
-        }
-        
-        function deleteSaleDetail(oidDeletedSaleDetail){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.oidDeleteSaleDetail.value = oidDeletedSaleDetail;
-                    document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.command.value = "<%=Command.DELETE%>";
-                    document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.action = "createSaleDetail.jsp";
-                    document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.submit();
-                }
-            })
-        }
-        
-        function simpan() {
-            document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.command.value = "<%=Command.SAVE%>";
-            document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.action = "createSaleDetail.jsp";
-            document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.submit();
-        }
+            window.onload = function(e){ 
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const code = urlParams.get('sale_code');
+                $("#sale_code").val(code);
+                $("#saleCode").html(code);
+                <% if (excCode > 0 && iCommand != Command.NONE) { %>
+                    alertError('<%=msgString%>')
+                <% } else if (iCommand != Command.NONE) { %>
+                window.location = document.referrer;
+                <% } %>
+            }
+            
+            function deleteSaleDetail(oidDeletedSaleDetail){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.oidDeleteSaleDetail.value = oidDeletedSaleDetail;
+                        document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.command.value = "<%=Command.DELETE%>";
+                        document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.action = "createSaleDetail.jsp";
+                        document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.submit();
+                    }
+                })
+            }
+            
+            function simpan() {
+                document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.command.value = "<%=Command.SAVE%>";
+                document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.action = "createSaleDetail.jsp";
+                document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.submit();
+            }
 
             $(document).ready(function() {
                 makeSelect2();
             });
+
+            $("body").on("change", "#product_id, #price, #qty", function(e){
+                const qty = $("#qty").val();
+                const price = $("#price").val();
+                $("#subtotal").val(subtotal(qty, price));
+            })
+
+            // $("body").on("click", "#btn-print", function(e){
+            //     e.preventDefault();
+            //     var element = document.getElementById('element-to-print');
+            //     html2pdf(element);
+            // })
+
+            $("body").on("change", "#product_id", function(e){
+                const price = $(this).find('option:selected').attr("product-price");
+                $("#price").val(Math.round(price));
+            })
+
             const makeSelect2 = () => {
                 $('#product_id').select2({
                     theme: 'bootstrap-5'
@@ -311,6 +347,10 @@
                     icon: 'error',
                     confirmButtonText: 'ok'
                 })
+            }
+
+            const subtotal = (qty, price) => {
+                return parseInt(qty) * parseInt(price);
             }
         </script>
 </body>

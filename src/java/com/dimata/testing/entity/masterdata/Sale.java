@@ -18,7 +18,7 @@ public class Sale extends Entity {
 
     private long id = 0;
     private String code = "";
-    private Date inv_date;
+    private String inv_date;
     private float grand_total = 0;
     private Date created_at = null;
     private Date updated_at = null;
@@ -59,14 +59,14 @@ public class Sale extends Entity {
     /**
      * @return the name
      */
-    public Date getInvDate() {
+    public String getInvDate() {
         return inv_date;
     }
 
     /**
      * @param name the name to set
      */
-    public void setInvDate(Date inv_date) {
+    public void setInvDate(String inv_date) {
         this.inv_date = inv_date;
     }
 

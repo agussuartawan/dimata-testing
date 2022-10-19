@@ -148,7 +148,14 @@
             <% if (excCode > 0 && iCommand != Command.NONE) { %>
                 alertError('<%=msgString%>')
             <% } else if (iCommand != Command.NONE) { %>
-                alertSuccess('Data save successfully')
+                Swal.fire({
+                    title: "Success",
+                    text: "Data deleted",
+                    icon: 'success',
+                    confirmButtonText: 'ok'
+                }).then(function() {
+                    window.location.href = "<%= approot %>/views/product/index.jsp";
+                });
             <% } %>
         }
 
@@ -176,14 +183,6 @@
                 title: 'Error!',
                 text: message,
                 icon: 'error',
-                confirmButtonText: 'ok'
-            })
-        }
-        const alertSuccess = (message) => {
-            Swal.fire({
-                title: 'Success!',
-                text: message,
-                icon: 'success',
                 confirmButtonText: 'ok'
             })
         }

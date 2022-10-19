@@ -98,7 +98,10 @@
                                 <i class="fas fa-table me-1"></i>
                                 Data Sale
                             </div>
-                            <a class="btn btn-sm btn-primary" href="<%= approot%>/views/sale/create.jsp">Add</a>
+                            <div>
+                                <a class="btn btn-sm btn-primary me-2" href="<%= approot%>/views/sale/create.jsp">Add</a>
+                                <a class="btn btn-sm btn-danger" href="<%= approot%>/views/sale/report.jsp" target="_blank">Print</a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
@@ -155,7 +158,14 @@
             <% if (excCode > 0 && iCommand != Command.NONE) { %>
                 alertError('<%=msgString%>')
             <% } else if (iCommand != Command.NONE) { %>
-                alertSuccess('Data save successfully')
+                Swal.fire({
+                    title: "Success",
+                    text: "Data saved",
+                    icon: 'success',
+                    confirmButtonText: 'ok'
+                }).then(function() {
+                    window.location.href = "<%= approot %>/views/sale/index.jsp";
+                });
             <% } %>
         }
 

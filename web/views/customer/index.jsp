@@ -146,7 +146,14 @@
             <% if (excCode > 0 && iCommand != Command.NONE) { %>
                 alertError('<%=msgString%>')
             <% } else if (iCommand != Command.NONE) { %>
-                alertSuccess('Data save successfully')
+                Swal.fire({
+                    title: "Success",
+                    text: "Data saved",
+                    icon: 'success',
+                    confirmButtonText: 'ok'
+                }).then(function() {
+                    window.location.href = "<%= approot %>/views/customer/index.jsp";
+                });
             <% } %>
         }
 
