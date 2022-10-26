@@ -165,6 +165,9 @@
                                 <% } %>
                             </div>
                             <hr>
+                            <div class="alert alert-danger" role="alert" style="display: none;" id="error">
+                                Error.. Check your input!
+                            </div>
                             <form name="<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>" method="POST" action="create.jsp" >
                                 <input type="hidden" name="command" id="command" value="<%= iCommand %>">
                                 <input type="hidden" name="oidDeleteSaleDetail" id="privdelete" value="<%= oidDeleteSaleDetail %>">
@@ -181,6 +184,7 @@
                                         <div class="form-group">
                                           <label for="product_id">Product</label>
                                           <select name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_PRODUCT_ID]%>" id="product_id" class="form-control">
+                                            <option value="0" product-price="0">~Pilih produk~</option>
                                             <% 
                                                 for(int i = 0; i < listProducts.size(); i++){
                                                 Product objProduct = (Product) listProducts.get(i);
@@ -193,7 +197,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                           <label for="qty">Qty</label>
-                                          <input type="number" class="form-control" id="qty" value="0" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_QTY]%>">
+                                          <input type="number" class="form-control" id="qty" value="0" name="<%=frmSaleDetail.fieldNames[frmSaleDetail.FRM_FIELD_QTY]%>" required>
                                         </div>
                                     </div>
 
@@ -308,6 +312,24 @@
             }
             
             function simpan() {
+                const product_id = $("#product_id").val();
+                const qty = $("#qty").val();
+                const price = $("#price").val();
+                const error = $("#error");
+
+                error.fadeOut("slow");
+                if(qty === ""){
+                    error.fadeIn("slow");
+                    return;
+                }
+                if(price === ""){
+                    error.fadeIn("slow");
+                    return;
+                }
+                if(product_id === "0"){
+                    error.fadeIn("slow");
+                    return;
+                }
                 document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.command.value = "<%=Command.SAVE%>";
                 document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.action = "createSaleDetail.jsp";
                 document.<%=frmSaleDetail.FRM_NAME_SALE_DETAIL%>.submit();

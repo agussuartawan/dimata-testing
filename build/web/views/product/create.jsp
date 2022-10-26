@@ -80,6 +80,9 @@
                             Create New Product
                         </div>
                         <div class="card-body">
+                            <div class="alert alert-danger" role="alert" style="display: none;" id="error">
+                                Error.. Check your input!
+                            </div>
                             <form action="create.jsp" name="<%=frmProduct.FRM_NAME_PRODUCT%>" id="form" method="POST">
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
                                 <input type="hidden" name="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" id="<%=frmProduct.fieldNames[frmProduct.FRM_FIELD_ID]%>" value="<%= appProductOID%>">
@@ -133,6 +136,29 @@
         }
         
         function simpan() {
+            const code = $("#code").val();
+            const name = $("#name").val();
+            const stock = $("#stock").val();
+            const price = $("#price").val();
+            const error = $("#error");
+
+            error.fadeOut("slow");
+            if(code === ""){
+                error.fadeIn("slow");
+                return;
+            }
+            if(name === ""){
+                error.fadeIn("slow");
+                return;
+            }
+            if(stock === ""){
+                error.fadeIn("slow");
+                return;
+            }
+            if(price === ""){
+                error.fadeIn("slow");
+                return;
+            }
             document.<%=frmProduct.FRM_NAME_PRODUCT%>.command.value = "<%=Command.SAVE%>";
             document.<%=frmProduct.FRM_NAME_PRODUCT%>.action = "create.jsp";
             document.<%=frmProduct.FRM_NAME_PRODUCT%>.submit();

@@ -98,6 +98,9 @@
                                 New Sale
                         </div>
                         <div class="card-body">
+                            <div class="alert alert-danger" role="alert" style="display: none;" id="error">
+                                Error.. Check your input!
+                            </div>
                             <form name="<%=frmSale.FRM_NAME_SALE%>" method="GET" action="create.jsp" >
                                 <input type="hidden" name="command" id="command" value="<%= iCommand %>">
                                 <input type="hidden" name="sale_id" id="sale_id" value="<%= appSaleOID %>">
@@ -174,6 +177,24 @@
                 <% } %>
             }
             function simpan() {
+                const customer_id = $("#customer_id").val();
+                const date = $("#date").val();
+                const code = $("#code").val();
+                const error = $("#error");
+
+                error.fadeOut("slow");
+                if(customer_id === "0"){
+                    error.fadeIn("slow");
+                    return;
+                }
+                if(date === ""){
+                    error.fadeIn("slow");
+                    return;
+                }
+                if(code === ""){
+                    error.fadeIn("slow");
+                    return;
+                }
                 document.<%=frmSale.FRM_NAME_SALE%>.command.value = "<%=Command.SAVE%>";
                 document.<%=frmSale.FRM_NAME_SALE%>.action = "create.jsp";
                 document.<%=frmSale.FRM_NAME_SALE%>.submit();

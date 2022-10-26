@@ -84,19 +84,20 @@
                                 <input type="hidden" name="command" id="command" value="<%= iCommand%>">
                                 <input type="hidden" name="<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ID]%>" value="<%= appCustomerOID%>" id="<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ID]%>" value="<%= appCustomerOID%>">
                                 <input type="hidden" name="approot" id="approot" value="<%= approot%>">
+
                                 <div class="form-group mb-3">
                                     <label for="code">Name</label>
-                                    <input required type="text" class="form-control" id="code" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_NAME]%>' value="<%=objCustomer.getName()%>"  placeholder="Enter Name">
+                                    <input required type="text" class="form-control" id="code" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_NAME]%>' value="<%=objCustomer.getName()%>" placeholder="Enter Name" required>
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="phone">Phone</label>
-                                    <input required type="text" class="form-control" id="phone" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_PHONE]%>' value="<%=objCustomer.getPhone()%>"  placeholder="Enter Phone">
+                                    <input required type="text" class="form-control" id="phone" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_PHONE]%>' value="<%=objCustomer.getPhone()%>"  placeholder="Enter Phone" required>
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="address">Address</label>
-                                    <input required type="text" class="form-control" id="address" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ADDRESS]%>' value="<%=objCustomer.getAddress()%>"  placeholder="Enter Address">
+                                    <input required type="text" class="form-control" id="address" name='<%=frmCustomer.fieldNames[frmCustomer.FRM_FIELD_ADDRESS]%>' value="<%=objCustomer.getAddress()%>"  placeholder="Enter Address" required>
                                 </div>
                                 <a   href="<%= approot%>/views/customer/index.jsp" class="btn btn-secondary">Back</a>                                
                                 <a   href="javascript:simpan();" class="btn btn-primary">Save</a>                                
@@ -126,10 +127,10 @@
             <% } %>
         }
         function simpan() {
+            $("#form").validate();
             document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.command.value = "<%=Command.SAVE%>";
             document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.action = "form.jsp";
             document.<%=frmCustomer.FRM_NAME_CUSTOMER%>.submit();
-
         }
         const alertError = (message) => {
             Swal.fire({
